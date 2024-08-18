@@ -1,0 +1,83 @@
+<div class="header bg-gradient-default py-7 py-lg-8">
+  <div class="separator separator-bottom separator-skew zindex-100">
+    <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+    </svg>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container mt--8 pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <form role="form" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+            <div class="form-group mb-3">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="ni ni-email-83"></i>
+                  </span>
+                </div>
+                <input class="form-control" placeholder="Email" type="email" formControlName="email" required [ngClass]="{
+                    'is-invalid': submitted && loginForm.get('email').errors
+                  }">
+                <div *ngIf="submitted && loginForm.get('email').errors" class="invalid-feedback">
+                  <div *ngIf="loginForm.get('email').errors.required">Email es requerido</div>
+                  <div *ngIf="loginForm.get('email').errors.email">Email no es válido</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"></span>
+                </div>
+                <input type="password" id="input-password" class="form-control form-control-alternative"
+                  placeholder="Contraseña" formControlName="password"
+                  [ngClass]="{'is-invalid': submitted && loginForm.get('password').errors}"
+                  [type]="passwordVisible ? 'text' : 'password'" required />
+                <div class="input-group-append">
+                  <button type="button" class="input-group-text" (click)="passwordVisible = !passwordVisible">
+                    <i class="ni"
+                      [ngClass]="{'ni-key-25': passwordVisible, 'ni-lock-circle-open': !passwordVisible}"></i>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="submitted && loginForm.get('password')?.errors" class="invalid-feedback">
+                <div *ngIf="loginForm.get('password')?.errors?.required">Contraseña es
+                  requerida</div>
+                <div *ngIf="loginForm.get('password')?.errors?.minlength">Contraseña debe
+                  tener al menos 8
+                  caracteres</div>
+                <div *ngIf="loginForm.get('password')?.errors?.maxlength">Contraseña debe
+                  tener como máximo 16
+                  caracteres</div>
+                <div *ngIf="loginForm.get('password')?.errors?.pattern">Contraseña debe
+                  contener al menos una
+                  letra mayúscula, una letra minúscula, un número y un carácter especial</div>
+                <div
+                  *ngIf="loginForm?.errors?.passwordsNotMatching && loginForm?.errors?.passwordsNotMatching !== null">
+                  Las contraseñas no coinciden</div>
+              </div>
+            </div>
+            <div class="text-center">
+              Para esta demo, no se requiere autenticación pues no está desplegado el api ni la bd. Use el usuario: <strong>admin&#64;admin</strong> y la contraseña: <strong>admin102030</strong> por mero formalismo
+              <button type="submit" class="btn btn-primary my-4" [disabled]="loginForm.invalid">
+                Iniciar Sesión
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-6">
+          <a href="javascript:void(0)" class="text-light"><small>¿Olvidaste la contraseña?</small></a>
+        </div>
+        <div class="col-6 text-right">
+          <a href="javascript:void(0)" class="text-light"><small>Crea una nueva cuenta</small></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

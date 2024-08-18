@@ -1,0 +1,132 @@
+<div class="header pb-8 pt-5 pt-lg-8" style="
+    background-image: url(https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply);
+    background-size: cover;
+    background-position: center top;
+  ">
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <div class="container-fluid">
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div *ngIf="studentSelected" class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+      <div class="card card-profile shadow">
+        <div class="row justify-content-center">
+          <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image">
+              <a href="javascript:void(0)">
+                <img src="../../../assets/img/brand/profile-circle.1023x1024.png" class="rounded-circle">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+          <div class="d-flex justify-content-between">
+            <!-- <button class="btn btn-sm btn-danger float-right">Reportar</button> -->
+          </div>
+        </div>
+        <div class="card-body pt-0 pt-md-4">
+          <div class="row">
+            <div class="col">
+              <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                <div>
+                  <span class="heading">{{studentSelected?.total_hours == 0 ? 0 : studentSelected?.total_hours || '0'}}</span>
+                  <span class="description">Horas aprobadas</span>
+                </div>
+                <div>
+                  <span class="heading">{{studentSelected?.total_hours_pending == 0 ? 0 :
+                    studentSelected?.total_hours_pending
+                    || '0'}}</span>
+                  <span class="description">Horas por aprobación</span>
+                </div>
+                <div>
+                  <span class="heading">{{studentSelected?.remaining_hours == 0 ? 0 : studentSelected?.remaining_hours
+                    || '0'}}</span>
+                  <span class="description">Horas restantes</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="text-center">
+            <h3>
+              {{studentSelected?.primer_nombre || ''}} {{studentSelected?.primer_apellido || ''}}<span
+                class="font-weight-light">,
+                {{studentSelected?.cedula || ''}}</span>
+            </h3>
+            <div class="h5 font-weight-300">
+              <i class="ni location_pin mr-2"></i>{{studentSelected?.direccion || ''}}
+            </div>
+            <hr class="my-4" />
+            <p>{{studentSelected?.observaciones || ''}}
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-xl-8 order-xl-1">
+      <div class="card shadow">
+        <div class="card bg-secondary shadow">
+          <div class="card-header bg-white border-0">
+            <div class="row align-items-center">
+              <div class="col-12">
+                <h3 class="mb-0">Bienvenido, {{ studentSelected?.primer_nombre || '' }}! Registre sus horas</h3>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <form *ngIf="student.length" [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+              <div class="pl-lg-4">
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="form-group">
+                      <label class="form-control-label" for="select-student">Estudiante</label>
+                      <select class="form-control form-control-alternative" id="select-student" formControlName="cedula"
+                        required disabled>
+                        <option *ngFor="let currentStudent of student" [value]="currentStudent.cedula">
+                          {{currentStudent.cedula}} - {{currentStudent.primer_nombre}} {{currentStudent.segundo_nombre}}
+                          {{currentStudent.primer_apellido}} {{currentStudent.segundo_apellido}}</option>
+                      </select>
+                      <div *ngIf="submittedHours && studentForm.get('cedula').errors" class="invalid-feedback">
+                        <div *ngIf="studentForm.get('cedula')?.errors?.required">Estudiante es requerido</div>
+                        <div *ngIf="studentForm.get('cedula')?.errors?.pattern">Cédula debe ser un número</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div *ngIf="studentSelected && (studentSelected.id_estatus ==2 || studentSelected.id_estatus == 3) && (studentSelected.total_hours_pending < 30)"
+                      class="form-group">
+                      <label class="form-control-label" for="input-cantidad_horas">Horas realizadas</label>
+                      <input type="number" id="input-cantidad_horas" class="form-control form-control-alternative"
+                        placeholder="1-20" formControlName="cantidad_horas"
+                        [ngClass]="{'is-invalid': submittedHours && studentForm.get('cantidad_horas').errors}"
+                        [pattern]="'^[0-9]+$'" required />
+                      <div *ngIf="submittedHours && studentForm.get('cantidad_horas').errors" class="invalid-feedback">
+                        <div *ngIf="studentForm.get('cantidad_horas').errors.required">Horas realizadas son requerida
+                        </div>
+                        <div *ngIf="studentForm.get('cantidad_horas').errors.pattern">Horas realizadas debe ser un
+                          número válido</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="studentSelected && !((studentSelected.id_estatus ==2 || studentSelected.id_estatus == 3))">
+                <p>Al estudiante no se le pueden asignar horas, configurelo o comuniquese con administración.</p>
+              </div>
+              <div *ngIf="studentSelected && studentSelected.total_hours_pending >= 30">
+                <p>El estudiante ya tiene 30 horas o más pendientes por aprobación, no se le pueden asignar más horas. Espere a que se aprueben o avise a la administración.</p>
+              </div>
+              <button *ngIf="studentSelected && (studentSelected.id_estatus ==2 || studentSelected.id_estatus == 3) && (studentSelected.total_hours_pending < 30)"
+                type="submit" style="width: 100%;" [disabled]="studentForm.invalid"
+                class="btn btn-default btn-lg w-100">Enviar solicitud de horas</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

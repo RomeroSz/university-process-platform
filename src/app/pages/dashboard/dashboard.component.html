@@ -1,0 +1,188 @@
+<div class="header pb-8 pt-5 pt-lg-8" style="
+    background-image: url(https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply);
+    background-size: cover;
+    background-position: center top;
+  ">
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <app-card-stats></app-card-stats>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-8 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-light ls-1 mb-1">
+                Descripción general
+              </h6>
+              <h2 class="text-white mb-0">Estudiantes en sistema</h2>
+            </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"
+                  (click)="data = datasets[0]; updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{ active: clicked === true }"
+                    data-toggle="tab" (click)="clicked = true; clicked1 = false">
+                    <span class="d-none d-md-block">Mensual</span>
+                    <span class="d-md-none">A</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"
+                  (click)="data = datasets[1]; updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{ active: clicked1 === true }"
+                    data-toggle="tab" (click)="clicked = false; clicked1 = true">
+                    <span class="d-none d-md-block">Semanal</span>
+                    <span class="d-md-none">S</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Chart -->
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted ls-1 mb-1">Alcance</h6>
+              <h2 class="mb-0">Total estudiantes en sistema</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Chart -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-xl-8 mb-5 mb-xl-0">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">Últimos estudiantes ingresados</h3>
+            </div>
+            <div class="col text-right">
+              <a [routerLink]="['/admin/control-estudiantes']" routerLinkActive="active"
+                class="btn btn-sm btn-primary">Verlos
+                todos</a>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <!-- Projects table -->
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Estatus</th>
+                <th scope="col">Cedula</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Teléfono</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let student of students">
+                <tr>
+                  <td>
+                    <span *ngIf="student.id_estatus === 2">
+                      <button type="button" data-bs-toggle="modal" data-bs-target="#modal-notification"
+                        class="btn btn-sm btn-danger" (click)="startProcess(student)">Pendiente</button>
+                      <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog"
+                        aria-labelledby="modal-notification" aria-hidden="true">
+                        <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                          <div class="card card-profile shadow modal-content">
+                            <div class="modal-header">
+                              <h6 class="modal-title" id="modal-title-notification">Verificación de acción</h6>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                              </button>
+                            </div>
+                            <div class="py-3 gap-3 text-center">
+                              <div class="icon icon-shape bg-default text-white rounded-circle shadow">
+                                <i class="ni ni-bell-55 ni-3x"></i>
+                              </div>
+                              <h4 class="h4 text-uppercase font-weight-bold mb-0">ATENCIÓN</h4>
+                              <p class="card-title text-muted mb-0">Deseas aceptar la solicitud del estudiante?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-success">Aceptar</button>
+                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </span>
+                    <span *ngIf="student.id_estatus === 1">Inscrito</span>
+                    <span *ngIf="student.id_estatus === 3">En curso</span>
+                    <span *ngIf="student.id_estatus===4"><button type="button"
+                        class="btn btn-sm btn-outline-info">Esperando acta</button></span>
+                    <span *ngIf="student.id_estatus === 5"><button type="button"
+                        class="btn btn-sm btn-outline-success">Finalizado</button></span>
+                  </td>
+                  <td>{{student.cedula}}</td>
+                  <td>{{student?.primer_nombre || ''}} {{student?.primer_apellido || ''}}</td>
+                  <td>{{student.telefono}}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="col-xl-4">
+  <div class="card shadow">
+    <div class="card-header border-0">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="mb-0">Datos Generales</h3>
+        </div>
+        <div class="col text-right">
+          <a href="#!" class="btn btn-sm btn-primary">Ver más</a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Referencia</th>
+            <th scope="col">Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Carrera 1</th>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">Carrera 2</th>
+            <td>80</td>
+          </tr>
+          <tr>
+            <th scope="row">Publica</th>
+            <td>80</td>
+          </tr>
+          <tr>
+            <th scope="row">Privada</th>
+            <td>80</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->

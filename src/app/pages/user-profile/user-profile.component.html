@@ -1,0 +1,246 @@
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="
+    background-image: url(https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply);
+    background-size: cover;
+    background-position: center top;
+  ">
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Bienvenido</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Seccion Administrativa</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+            <h6 class="heading-small text-muted mb-4">Datos generales</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-email">Email</label>
+                    <input type="email" id="input-email" class="form-control form-control-alternative" placeholder=""
+                      formControlName="email" [class.is-invalid]="submitted && adminForm.get('email')?.errors"
+                      autocomplete="off" required />
+                    <div *ngIf="submitted && adminForm.get('email')?.errors" class="invalid-feedback">
+                      <div *ngIf="adminForm.get('email')?.errors?.required">Email es requerido</div>
+                      <div *ngIf="adminForm.get('email')?.errors?.email">Email no es válido</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-cedula">Cédula</label>
+                    <input type="text" id="input-cedula" class="form-control form-control-alternative" placeholder=""
+                      formControlName="cedula" [class.is-invalid]="submitted && adminForm.get('cedula')?.errors"
+                      [pattern]="'^[0-9]+$'" autocomplete="off" required />
+                    <div *ngIf="submitted && adminForm.get('cedula')?.errors" class="invalid-feedback">
+                      <div *ngIf="adminForm.get('cedula')?.errors?.required">Cédula es requerida</div>
+                      <div *ngIf="adminForm.get('cedula')?.errors?.pattern">Cédula debe ser un número</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-password">Contraseña</label>
+                    <div class="input-group input-group-alternative mb-4">
+                      <input type="password" id="input-password" class="form-control form-control-alternative"
+                        placeholder="" autocomplete="off" formControlName="password"
+                        [ngClass]="{'is-invalid': submitted && adminForm.get('password').errors}"
+                        [type]="passwordVisible ? 'text' : 'password'" required />
+                      <div class="input-group-append">
+                        <button type="button" class="input-group-text" (click)="passwordVisible = !passwordVisible">
+                          <i class="ni"
+                            [ngClass]="{'ni-key-25': passwordVisible, 'ni-lock-circle-open': !passwordVisible}"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div *ngIf="submitted && adminForm.get('password')?.errors" class="invalid-feedback">
+                      <div *ngIf="adminForm.get('password')?.errors?.required">Contraseña es
+                        requerida</div>
+                      <div *ngIf="adminForm.get('password')?.errors?.minlength">Contraseña debe
+                        tener al menos 8
+                        caracteres</div>
+                      <div *ngIf="adminForm.get('password')?.errors?.maxlength">Contraseña debe
+                        tener como máximo 16
+                        caracteres</div>
+                      <div *ngIf="adminForm.get('password')?.errors?.pattern">Contraseña debe
+                        contener al menos una
+                        letra mayúscula, una letra minúscula, un número y un carácter especial</div>
+                      <div
+                        *ngIf="adminForm?.errors?.passwordsNotMatching && adminForm?.errors?.passwordsNotMatching !== null">
+                        Las contraseñas no coinciden</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-confirmPassword">Confirmar Contraseña</label>
+                    <div class="input-group input-group-alternative mb-4">
+                      <input type="password" id="input-confirmPassword" class="form-control form-control-alternative"
+                        placeholder="" formControlName="confirmPassword"
+                        [ngClass]="{'is-invalid': submitted && adminForm.get('confirmPassword').errors}"
+                        [type]="passwordVisible2 ? 'text' : 'password'" required />
+                      <div class="input-group-append">
+                        <button type="button" class="input-group-text" (click)="passwordVisible2 = !passwordVisible2">
+                          <i class="ni"
+                            [ngClass]="{'ni-key-25': passwordVisible2, 'ni-lock-circle-open': !passwordVisible2}"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div *ngIf="submitted && adminForm.get('confirmPassword')?.errors" class="invalid-feedback">
+                      <div *ngIf="adminForm.get('confirmPassword')?.errors?.required">Confirmar Contraseña es
+                        requerida</div>
+                      <div *ngIf="adminForm.get('confirmPassword')?.errors?.minlength">Confirmar Contraseña debe
+                        tener al menos 8
+                        caracteres</div>
+                      <div *ngIf="adminForm.get('confirmPassword')?.errors?.maxlength">Confirmar Contraseña debe
+                        tener como máximo 16
+                        caracteres</div>
+                      <div *ngIf="adminForm.get('confirmPassword')?.errors?.pattern">Confirmar Contraseña debe
+                        contener al menos una
+                        letra mayúscula, una letra minúscula, un número y un carácter especial</div>
+                      <div
+                        *ngIf="adminForm?.errors?.passwordsNotMatching && adminForm?.errors?.passwordsNotMatching !== null">
+                        Las contraseñas no coinciden</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">Primer Nombre</label>
+                    <input type="text" id="input-first-name" class="form-control form-control-alternative"
+                      placeholder="" formControlName="primer_nombre"
+                      [class.is-invalid]="submitted && adminForm.get('primer_nombre')?.errors"
+                      pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
+                      title="Solo letras y el caracter especial ' para el primer nombre" required />
+                    <div *ngIf="submitted && adminForm.get('primer_nombre')?.errors" class="invalid-feedback">
+                      <div *ngIf="adminForm.get('primer_nombre')?.errors?.required">El primer nombre es requerido
+                      </div>
+                      <div *ngIf="adminForm.get('primer_nombre')?.errors?.pattern">Solo letras para el primer nombre
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">Primer Apellido</label>
+                    <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder=""
+                      formControlName="primer_apellido"
+                      [ngClass]="{'is-invalid': submitted && adminForm.get('primer_apellido').errors}"
+                      pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required />
+                    <div
+                      *ngIf="submitted && (adminForm.get('primer_apellido')?.errors || adminForm.get('primer_apellido')?.touched && !adminForm.get('primer_apellido')?.valid)"
+                      class="invalid-feedback">
+                      <div *ngIf="adminForm.get('primer_apellido')?.errors?.required">El primer apellido es
+                        requerido</div>
+                      <div *ngIf="adminForm.get('primer_apellido')?.errors?.pattern">Solo letras y acentos para el
+                        primer
+                        apellido</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-personal-phone">Telefono</label>
+                    <input type="text" id="input-personal-phone" class="form-control form-control-alternative"
+                      placeholder="" formControlName="telefono"
+                      [ngClass]="{'is-invalid': submitted && adminForm.get('telefono').errors}"
+                      pattern="^(0412|0414|0424|0416|0426)\d{7}$"
+                      title="Debe empezar con 0412 0414 0424 0416 0426 seguido de 7 numeros" required />
+                    <div *ngIf="submitted && adminForm.get('telefono').errors" class="invalid-feedback">
+                      <div *ngIf="adminForm.get('telefono').errors.required">Telefono es requerido</div>
+                      <div *ngIf="adminForm.get('telefono').errors.pattern">Debe empezar con 0412 0414 0424 0416
+                        0426 seguido de 7 numeros</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+            <!-- Personal Address -->
+            <h6 class="heading-small text-muted mb-4">Dirección Personal</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-direccion">Direccion</label>
+                    <input id="input-direccion" class="form-control form-control-alternative" placeholder="" type="text"
+                      formControlName="direccion" minlength="5" required />
+                    <div *ngIf="submitted && adminForm.get('direccion').errors" class="invalid-feedback">
+                      <div *ngIf="adminForm.get('direccion').errors.required">Dirección es requerida</div>
+                      <div *ngIf="adminForm.get('direccion').errors.minlength">La dirección debe tener al menos 5
+                        caracteres
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+            <!-- Description -->
+            <h6 class="heading-small text-muted mb-4">Información extra</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="observation-textarea">Observaciones</label>
+                    <textarea id="observation-textarea" class="form-control form-control-alternative" placeholder=""
+                      formControlName="observaciones" rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-block btn-primary btn-lg w-100"
+              style="width: 100%;">Registrar admin</button>
+          </form>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <!-- Projects table -->
+            <table class="table align-items-center table-flush w-100">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Cedula</th>
+                  <th scope="col">Nombre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let admin of admins">
+                  <tr>
+                    <td>{{admin.username}}</td>
+                    <td>{{admin.cedula}}</td>
+                    <td>{{admin?.primer_nombre || ''}} {{admin?.primer_apellido || ''}}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

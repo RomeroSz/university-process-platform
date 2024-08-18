@@ -1,0 +1,92 @@
+<div class="header pb-8 pt-5 pt-lg-8" style="
+    background-image: url(https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply);
+    background-size: cover;
+    background-position: center top;
+  ">
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <app-card-stats></app-card-stats>
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card bg-secondary shadow">
+          <div class="card-header bg-white border-0">
+            <div class="row align-items-center">
+              <div class="col-8">
+                <h3 class="mb-0">Actas de Aprobación del Estudiante</h3>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table class="table align-items-center table-flush w-100">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Cedula</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let student of students">
+                    <tr>
+                      <td>
+                        <span><button type="button" class="btn btn-sm btn-outline-info">Esperando acta</button></span>
+                      </td>
+                      <td>{{student.cedula}}</td>
+                      <td>{{student?.primer_nombre || ''}} {{student?.primer_apellido || ''}}</td>
+                      <td>
+                        <span>
+                          <button type="button" class="btn btn-sm" (click)="generatePdf('open', student)"><span
+                              class="text-default"><i class="fa fa-eye"></i></span></button>
+                          <button type="button" class="btn btn-sm" (click)="generatePdf('download', student)"><span
+                              class="text-default"><i class="fa fa-download"></i></span></button>
+                          <button type="button" class="btn btn-sm" (click)="generatePdf('print', student)"><span
+                              class="text-default"><i class="fa fa-print"></i></span></button>
+                          <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog"
+                            aria-labelledby="modal-notification" aria-hidden="true">
+                            <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                              <div class="card card-profile shadow modal-content">
+                                <div class="modal-header">
+                                  <h6 class="modal-title" id="modal-title-notification">Verificación de acción</h6>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                  </button>
+                                </div>
+                                <div class="py-3 gap-3 text-center">
+                                  <div class="icon icon-shape bg-default text-white rounded-circle shadow">
+                                    <i class="ni ni-bell-55 ni-3x"></i>
+                                  </div>
+                                  <h4 class="h4 text-uppercase font-weight-bold mb-0">ATENCIÓN</h4>
+                                  <p class="card-title text-muted mb-0">Deseas aceptar la solicitud del estudiante?</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-success">Aceptar</button>
+                                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </span>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
